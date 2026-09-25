@@ -269,54 +269,274 @@ def cadastrar():
         cursor.close()
 
 
-
 @app.route('/livros/relatorio', methods=['GET'])
 def relatorio():
+
+    from datetime import datetime
 
     cursor = con.cursor()
 
     cursor.execute("""
-        SELECT id_livro, titulo, autor, ano_publicacao
-        FROM livro
+        SELECT ID_LIVRO, TITULO, AUTOR, ANO_PUBLICACAO
+        FROM LIVRO
+        ORDER BY ID_LIVRO
     """)
 
     livros = cursor.fetchall()
     cursor.close()
 
+    # --------------------------------------------------
+    # CONFIGURAÇÃO DO PDF
+    # --------------------------------------------------
+
     pdf = FPDF()
-    pdf.set_auto_page_break(auto=True, margin=15)
+    pdf.set_auto_page_break(auto=True, margin=20)
     pdf.add_page()
 
-    pdf.set_font("Arial", style='B', size=16)
-    pdf.cell(200, 10, "Relatório de Livros", ln=True, align='C')
+    # Cores
+    azul_marinho = (15, 39, 71)
+    azul_claro = (225, 233, 242)
+    cinza = (100, 110, 120)
+    branco = (255, 255, 255)
+    preto = (35, 40, 45)
 
-    pdf.ln(5)  # Espaço entre o título e a linha
-    pdf.line(10, pdf.get_y(), 200, pdf.get_y())  # Linha abaixo do título
-    pdf.ln(5)  # Espaço após a linha
+    # --------------------------------------------------
+    # CABEÇALHO
+    # --------------------------------------------------
 
-    pdf.set_font("Arial", size=12)
+    # Faixa azul-marinho
+    pdf.set_fill_color(*azul_marinho)
+    pdf.rect(0, 0, 210, 43, "F")
 
-    for livro in livros:
+    # Nome da biblioteca
+    pdf.set_text_color(*branco)
+    pdf.set_font("Arial", "B", 23)
+
+    pdf.set_y(9)
+    pdf.cell(
+        0,
+        10,
+        "BIBLIOTECA",
+        align="C",
+        ln=True
+    )
+
+    # Subtítulo
+    pdf.set_font("Arial", "", 10)
+
+    pdf.cell(
+        0,
+        7,
+        "Relatório de livros cadastrados",
+        align="C",
+        ln=True
+    )
+
+    # Volta para preto
+    pdf.set_text_color(*preto)
+
+    pdf.set_y(53)
+
+    # --------------------------------------------------
+    # INFORMAÇÕES DO RELATÓRIO
+    # --------------------------------------------------
+
+    data_atual = datetime.now().strftime("%d/%m/%Y às %H:%M")
+
+    pdf.set_font("Arial", "B", 13)
+
+    pdf.cell(
+        0,
+        8,
+        "Relatório de Livros",
+        ln=True
+    )
+
+    pdf.set_font("Arial", "", 9)
+
+    pdf.set_text_color(*cinza)
+
+    pdf.cell(
+        0,
+        6,
+        f"Gerado em {data_atual}",
+        ln=True
+    )
+
+    pdf.set_text_color(*preto)
+
+    pdf.ln(7)
+
+    # --------------------------------------------------
+    # TABELA
+    # --------------------------------------------------
+
+    largura_id = 18
+    largura_titulo = 72
+    largura_autor = 65
+    largura_ano = 25
+
+    # Cabeçalho da tabela
+    pdf.set_font("Arial", "B", 9)
+    pdf.set_text_color(*branco)
+    pdf.set_fill_color(*azul_marinho)
+
+    pdf.cell(
+        largura_id,
+        11,
+        "ID",
+        border=0,
+        align="C",
+        fill=True
+    )
+
+    pdf.cell(
+        largura_titulo,
+        11,
+        "Título",
+        border=0,
+        align="L",
+        fill=True
+    )
+
+    pdf.cell(
+        largura_autor,
+        11,
+        "Autor",
+        border=0,
+        align="L",
+        fill=True
+    )
+
+    pdf.cell(
+        largura_ano,
+        11,
+        "Ano",
+        border=0,
+        align="C",
+        fill=True
+    )
+
+    pdf.ln()
+
+    # --------------------------------------------------
+    # DADOS DOS LIVROS
+    # --------------------------------------------------
+
+    pdf.set_font("Arial", "", 9)
+    pdf.set_text_color(*preto)
+
+    for i, livro in enumerate(livros):
+
+        id_livro = str(livro[0])
+        titulo = str(livro[1])
+        autor = str(livro[2])
+        ano = str(livro[3])
+
+        # Linhas alternadas
+        if i % 2 == 0:
+            pdf.set_fill_color(248, 250, 252)
+        else:
+            pdf.set_fill_color(*branco)
+
         pdf.cell(
-            200,
+            largura_id,
             10,
-            f"ID: {livro[0]} - {livro[1]} - {livro[2]} - {livro[3]}",
-            ln=True
+            id_livro,
+            border="B",
+            align="C",
+            fill=True
         )
+
+        pdf.cell(
+            largura_titulo,
+            10,
+            titulo[:42],
+            border="B",
+            align="L",
+            fill=True
+        )
+
+        pdf.cell(
+            largura_autor,
+            10,
+            autor[:38],
+            border="B",
+            align="L",
+            fill=True
+        )
+
+        pdf.cell(
+            largura_ano,
+            10,
+            ano,
+            border="B",
+            align="C",
+            fill=True
+        )
+
+        pdf.ln()
+
+    # --------------------------------------------------
+    # TOTAL DE LIVROS
+    # --------------------------------------------------
 
     contador_livros = len(livros)
 
-    pdf.ln(10)  # Espaço antes do contador
+    pdf.ln(12)
 
-    pdf.set_font("Arial", style='B', size=12)
+    pdf.set_fill_color(*azul_claro)
+    pdf.set_draw_color(*azul_marinho)
+
+    pdf.set_font("Arial", "B", 11)
+    pdf.set_text_color(*azul_marinho)
 
     pdf.cell(
-        200,
-        10,
+        0,
+        14,
         f"Total de livros cadastrados: {contador_livros}",
-        ln=True,
-        align='C'
+        border=1,
+        align="C",
+        fill=True
     )
+
+    # --------------------------------------------------
+    # RODAPÉ
+    # --------------------------------------------------
+
+    pdf.set_y(-20)
+
+    pdf.set_draw_color(*azul_marinho)
+
+    pdf.line(
+        15,
+        pdf.get_y(),
+        195,
+        pdf.get_y()
+    )
+
+    pdf.ln(3)
+
+    pdf.set_font("Arial", "", 8)
+    pdf.set_text_color(*cinza)
+
+    pdf.cell(
+        95,
+        8,
+        "Sistema de Biblioteca",
+        align="L"
+    )
+
+    pdf.cell(
+        95,
+        8,
+        f"Página {pdf.page_no()}",
+        align="R"
+    )
+
+    # --------------------------------------------------
+    # SALVAR PDF
+    # --------------------------------------------------
 
     pdf_path = "relatorio_livros.pdf"
 
@@ -325,9 +545,8 @@ def relatorio():
     return send_file(
         pdf_path,
         as_attachment=True,
-        mimetype='application/pdf'
+        mimetype="application/pdf"
     )
-
 
 if __name__ == "__main__":
     app.run(debug=True)

@@ -351,6 +351,7 @@ td form {
 }
 
 .titulo-btn{
+
     display: flex;
     width: 22%;
     align-items: center;

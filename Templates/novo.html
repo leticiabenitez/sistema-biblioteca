@@ -10,10 +10,13 @@
         <div class="nome-pag">
             <h2>📚 Biblioteca</h2>
         </div>
-        <div class="titulo-btn">
+        <div class="titulo">
             <h1>Adicionar livro</h1>
-            <a href="{{ url_for('home') }}" class="cancelar">Cancelar</a>
+            <div class="titulo-btn">
+                <a href="{{ url_for('home') }}" class="cancelar">Cancelar</a>
+            </div>
         </div>
+
 
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
