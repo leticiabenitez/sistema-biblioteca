@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="pt-br" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <title>Cadastrar Usuário</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<main>
+        <div class="nome-pag">
+            <h2>📚 Biblioteca</h2>
+        </div>
+
+        <div class="titulo-btn">
+            <h1>👤 Cadastrar Usuário</h1>
+            <a href="{{ url_for('index') }}" class="cancelar">Cancelar</a>
+        </div>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-messages">
+                    {%  for category, message in messages %}
+                        <div class="flash {{ category }}">{{  message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <form action="/cadastrar" method="POST">
+            <label for="nome">Nome completo:</label>
+            <input type="text" id="nome" name="nome" required placeholder="Ex.: Letícia Benitez Castilho">
+
+            <label for="email">E-mail:</label>
+            <input type="text" id="email" name="email" required placeholder="Ex.: leticia@email.com">
+
+            <label for="senha">Senha:</label>
+            <input type="password" id="senha" name="senha" required placeholder="Crie uma senha forte">
+
+            <div class="requisitos">
+                <p>Requisitos para senha:</p>
+                <p id="req-caracteres">* no mínimo 8 caracteres</p>
+                <p id="req-maiuscula">* no mínimo 1 letra maiúscula</p>
+                <p id="req-minuscula">* no mínimo 1 letra minúscula</p>
+                <p id="req-numero">* no mínimo 1 número</p>
+                <p id="req-especial">* no mínimo 1 caractere especial</p>
+            </div>
+
+            <button type="submit" id="botao">Cadastrar</button>
+        </form>
+    </main>
+
+    <script>
+        const senha = document.getElementById("senha");
+
+        senha.addEventListener("input", function() {
+
+            let min_caractere = false;
+            let min_upper = false;
+            let min_lower = false;
+            let min_num = false;
+            let min_caractere_esp = false;
+
+            if (senha.value.length >= 8) {
+                min_caractere = true;
+            }
+
+            for (let caractere of senha.value) {
+
+                if (caractere >= "A" && caractere <= "Z") {
+                    min_upper = true;
+                }
+
+                if (caractere >= "a" && caractere <= "z") {
+                    min_lower = true;
+                }
+
+                if (caractere >= "0" && caractere <= "9") {
+                    min_num = true;
+                }
+
+                if (!(caractere >= "A" && caractere <= "Z") &&
+                    !(caractere >= "a" && caractere <= "z") &&
+                    !(caractere >= "0" && caractere <= "9")) {
+                    min_caractere_esp = true;
+                }
+            }
+
+            if (min_caractere == true) {
+                document.getElementById("req-caracteres").classList.add("cumprido");
+            } else {
+                document.getElementById("req-caracteres").classList.remove("cumprido");
+            }
+
+            if (min_upper == true) {
+                document.getElementById("req-maiuscula").classList.add("cumprido");
+            } else {
+                document.getElementById("req-maiuscula").classList.remove("cumprido");
+            }
+
+            if (min_lower == true) {
+                document.getElementById("req-minuscula").classList.add("cumprido");
+            } else {
+                document.getElementById("req-minuscula").classList.remove("cumprido");
+            }
+
+            if (min_num == true) {
+                document.getElementById("req-numero").classList.add("cumprido");
+            } else {
+                document.getElementById("req-numero").classList.remove("cumprido");
+            }
+
+            if (min_caractere_esp == true) {
+                document.getElementById("req-especial").classList.add("cumprido");
+            } else {
+                document.getElementById("req-especial").classList.remove("cumprido");
+            }
+
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,524 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    background-color: #e3e8fd;
+    color: #252331;
+}
+
+main {
+    width: 90%;
+    max-width: 1100px;
+    margin: 45px auto;
+}
+
+.nome-pag {
+    width: 100%;
+    padding: 16px 20px;
+    margin-bottom: 40px;
+
+    background-color: #000043;
+    border-radius: 12px;
+
+    box-shadow: 0 5px 15px rgba(0, 0, 67, 0.18);
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.sair {
+    color: #FFFFFF;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    text-decoration: none;
+    transition: 0.2s;
+}
+
+.sair:hover {
+    font-size: 16px;
+    transition: 0.2s;
+}
+
+.acessar-perfil {
+    color: #FFFFFF;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    text-decoration: none;
+    transition: 0.2s;
+}
+
+.acessar-perfil:hover {
+    font-size: 16px;
+    transition: 0.2s;
+}
+
+
+.nome-pag h2 {
+    color: #FFFFFF;
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+}
+
+.funcoes{
+    width: 20%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+h1 {
+    margin-bottom: 25px;
+
+    color: #252331;
+    font-size: 30px;
+    font-weight: 700;
+}
+
+table {
+    width: 100%;
+
+    background-color: #FFFFFF;
+
+    border: 1px solid #E8E4F0;
+    border-radius: 12px;
+
+    border-collapse: separate;
+    border-spacing: 0;
+
+    overflow: hidden;
+
+    box-shadow: 0 5px 20px rgba(37, 35, 49, 0.06);
+}
+
+thead {
+    background-color: #c1d4ea;
+}
+
+th {
+    padding: 17px 20px;
+
+    color: #000043;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    text-align: left;
+
+    border-bottom: 1px solid #E8E4F0;
+}
+
+td {
+    padding: 18px 20px;
+
+    color: #6F6B7A;
+
+    font-size: 14px;
+    font-weight: 500;
+
+    border-bottom: 1px solid #EEEAF4;
+}
+
+tbody tr:last-child td {
+    border-bottom: none;
+}
+
+tbody tr {
+    transition: background-color 0.2s ease;
+}
+
+tbody tr:hover {
+    background-color: #ebeffd;
+}
+
+tbody td:first-child {
+    color: #000043;
+    font-weight: 600;
+}
+
+form {
+    width: 100%;
+
+    padding: 35px;
+
+    background-color: #FFFFFF;
+
+    border: 1px solid #E8E4F0;
+    border-radius: 14px;
+
+    box-shadow: 0 5px 20px rgba(37, 35, 49, 0.06);
+
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    margin-bottom: 8px;
+
+    color: #000043;
+
+    font-size: 14px;
+    font-weight: 600;
+}
+
+input {
+    width: 100%;
+    height: 48px;
+
+    padding: 0 14px;
+    margin-bottom: 22px;
+
+    background-color: #FFFFFF;
+
+    border: 1px solid #E8E4F0;
+    border-radius: 9px;
+
+    outline: none;
+
+    color: #252331;
+
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+
+    transition: 0.2s ease;
+}
+
+input::placeholder {
+    color: #AAA6B5;
+}
+
+input:focus {
+    border-color: #000043;
+
+    box-shadow: 0 0 0 3px rgba(108, 76, 232, 0.10);
+}
+
+#botao {
+    width: 100%;
+    height: 48px;
+
+    margin-top: 5px;
+
+    background-color: #000043;
+
+    border: none;
+    border-radius: 9px;
+
+    color: #FFFFFF;
+
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+#botao:hover {
+    background-color: #21218a;
+
+    transform: translateY(-1px);
+
+    box-shadow: 0 5px 12px rgba(108, 76, 232, 0.20);
+}
+
+#botao:active {
+    transform: translateY(0);
+}
+
+.flash-messages {
+    width: 100%;
+    margin-bottom: 25px;
+}
+
+.flash {
+    width: 100%;
+    padding: 15px 18px;
+
+    border-radius: 10px;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    display: flex;
+    align-items: center;
+
+    border: 1px solid;
+}
+
+.flash.success {
+    background-color: #EAF8F0;
+    color: #26734D;
+    border-color: #BFE6D0;
+}
+
+.flash.error {
+    background-color: #FFF0F0;
+    color: #B23A48;
+    border-color: #F1C2C7;
+}
+
+.editar {
+    display: inline-block;
+
+    padding: 9px 16px;
+
+    background-color: #000043;
+    color: #FFFFFF;
+
+    border-radius: 8px;
+
+    text-decoration: none;
+
+    font-family: 'Montserrat', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+
+    transition: 0.2s ease;
+}
+
+.editar:hover {
+    background-color: #21218a;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(0, 0, 67, 0.20);
+}
+
+.editar:active {
+    transform: translateY(0);
+}
+
+.excluir {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 9px 16px;
+    margin-left: 6px;
+
+    background-color: #c5061b;
+    color: #FFFFFF;
+
+    border: none;
+    border-radius: 8px;
+
+    text-decoration: none;
+
+    font-family: 'Montserrat', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+.excluir:hover {
+    background-color: #d62a3d;
+
+    transform: translateY(-1px);
+
+    box-shadow: 0 4px 10px rgba(178, 58, 72, 0.25);
+}
+
+.excluir:active {
+    transform: translateY(0);
+}
+td form {
+    display: inline;
+    width: auto;
+    padding: 0;
+    margin: 0;
+    background-color: transparent;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+}
+
+.titulo-btn{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.adicionar, .cancelar {
+    display: inline-block;
+
+    padding: 10px 18px;
+
+    background-color: #000043;
+    color: #ffffff;
+
+    border-radius: 8px;
+
+    text-decoration: none;
+
+    font-family: 'Montserrat', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+
+    transition: 0.2s ease;
+}
+
+.adicionar:hover , .cancelar:hover{
+    background-color: #21218a;
+
+    transform: translateY(-1px);
+
+    box-shadow: 0 4px 10px rgba(0, 0, 67, 0.20);
+}
+
+.confirmacao {
+    width: 100%;
+    padding: 40px;
+
+    background-color: #FFFFFF;
+
+    border: 1px solid #E8E4F0;
+    border-radius: 14px;
+
+    box-shadow: 0 5px 20px rgba(37, 35, 49, 0.06);
+
+    text-align: center;
+}
+
+.confirmacao h1 {
+    margin-bottom: 15px;
+
+    color: #252331;
+    font-size: 28px;
+}
+
+.confirmacao p {
+    margin-bottom: 30px;
+
+    color: #6F6B7A;
+    font-size: 15px;
+    line-height: 1.6;
+}
+
+.confirmacao strong {
+    color: #000043;
+}
+
+.botoes-confirmacao {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.botoes-confirmacao form {
+    width: auto;
+    padding: 0;
+    margin: 0;
+
+    background: none;
+    border: none;
+    box-shadow: none;
+}
+
+.btn-excluir {
+    height: 48px;
+
+    padding: 0 20px;
+
+    background-color: #c5061b;
+    color: #FFFFFF;
+
+    border: none;
+    border-radius: 9px;
+
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+.btn-excluir:hover {
+    background-color: #d62a3d;
+
+    transform: translateY(-1px);
+
+    box-shadow: 0 5px 12px rgba(178, 58, 72, 0.20);
+}
+
+.btn-excluir:active {
+    transform: translateY(0);
+}
+
+.botoes-confirmacao .cancelar {
+    height: 48px;
+
+    padding: 0 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-color: #E8E8EC;
+    color: #4A4A55;
+
+    border: 1px solid #D5D5DC;
+}
+
+.botoes-confirmacao .cancelar:hover {
+    background-color: #f3f3f4;
+
+    transform: translateY(-1px);
+}
+
+td form {
+    display: inline;
+    width: auto;
+    padding: 0;
+    margin: 0;
+
+    background: transparent;
+    border: none;
+    box-shadow: none;
+}
+
+.cadastro {
+    margin-top: 18px;
+
+    color: #000043;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    text-align: center;
+
+    text-decoration: none;
+
+    transition: 0.2s ease;
+}
+
+.cadastro:hover {
+    color: #21218a;
+    text-decoration: underline;
+}
+
+.requisitos {
+    margin-top: 15px;
+    margin-bottom: 20px;
+}
+
+.requisitos p {
+    margin: 5px 0;
+}
+
+.requisitos .cumprido {
+    text-decoration: line-through;
+}

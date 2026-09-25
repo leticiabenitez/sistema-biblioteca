@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Confirmar Exclusão</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+    <main>
+        <div class="nome-pag">
+            <h2>📚 Biblioteca</h2>
+        </div>
+
+        <div class="confirmacao">
+            <h1>Confirmar exclusão</h1>
+
+            <p>Tem certeza que deseja excluir o livro <strong>{{ livro[1] }}</strong>?</p>
+
+            <div class="botoes-confirmacao">
+                <form method="POST" action="{{ url_for('excluir', id=livro[0]) }}">
+                    <button type="submit" class="btn-excluir">
+                        Sim, excluir
+                    </button>
+                </form>
+
+                <a href="{{ url_for('index') }}" class="cancelar">Cancelar</a>
+            </div>
+        </div>
+    </main>
+
+</body>
+</html>

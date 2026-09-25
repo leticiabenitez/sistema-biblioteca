@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Livros</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <main>
+        <div class="nome-pag">
+            <h2>📚 Biblioteca</h2>
+            {% if 'id_usuario' in session %}
+                <a class="sair" href="{{ url_for('logout') }}">Sair ↩️</a>
+            {% else %}
+                <a class="sair" href="{{ url_for('login_page') }}">Logar 👤</a>
+            {% endif %}
+        </div>
+
+        <div class="titulo-btn">
+            <h1>Lista de livros</h1>
+            <a class="adicionar" href="{{ url_for('novo') }}">Adicionar Livro</a>
+        </div>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-messages">
+                    {%  for category, message in messages %}
+                        <div class="flash {{ category }}">{{  message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Código</th>
+                    <th>Título</th>
+                    <th>Autor</th>
+                    <th>Ano de publicação</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for livro in livros %}
+                    <tr>
+                        <td>{{ livro[0] }}</td>
+                        <td>{{ livro[1] }}</td>
+                        <td>{{ livro[2] }}</td>
+                        <td>{{ livro[3] }}</td>
+                        <td>
+                            {% if 'id_usuario' in session %}
+                                <a class="editar" href="{{ url_for('editar', id=livro[0]) }}">Editar</a>
+                                <a href="{{ url_for('confirmar_exclusao', id=livro[0]) }}" class="excluir">Excluir</a>
+                            {% else %}
+                                <span style="color: gray;">🔒 Login necessário</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </main>
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-br" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <title>Login Usuário</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<main>
+        <div class="nome-pag">
+            <h2>📚 Biblioteca</h2>
+        </div>
+
+        <div class="titulo-btn">
+            <h1>👤 Login Usuário</h1>
+        </div>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-messages">
+                    {%  for category, message in messages %}
+                        <div class="flash {{ category }}">{{  message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <form action="/login" method="POST">
+            <label for="email">E-mail:</label>
+            <input type="text" id="email" name="email" required placeholder="Digite seu e-mail cadastrado">
+
+            <label for="senha">Senha:</label>
+            <input type="password" id="senha" name="senha" required placeholder="Digite sua senha">
+
+            <button type="submit" id="botao">Entrar</button>
+            <a href="{{ url_for('novo_usuario') }}" class="cadastro">Não tem conta? Fazer cadastro.</a>
+
+        </form>
+    </main>
+
+</body>
+</html>
