@@ -1,7 +1,7 @@
-import bcrypt
-from flask import Flask, render_template, request, redirect, url_for, flash, session
+from flask import Flask, render_template, request, redirect, url_for, flash, session, send_file
 import fdb
 from werkzeug.security import generate_password_hash, check_password_hash
+from fpdf import FPDF
 
 app = Flask(__name__)
 
@@ -67,31 +67,35 @@ def login():
     cursor = con.cursor()
 
     try:
-        cursor.execute("""SELECT ID_USUARIO, SENHA, COALESCE(STATUS, 1) FROM USUARIO WHERE EMAIL = ?""", (email,))
+        cursor.execute("""SELECT ID_USUARIO, SENHA, COALESCE(STATUS, 1), COALESCE(TENTATIVAS, 0) FROM USUARIO WHERE EMAIL = ?""", (email,))
         usuario = cursor.fetchone()
-        if usuario[2] == 1:
-            if usuario:
-                id_usuario, senha_banco = usuario
+
+        if usuario:
+            if usuario[2] == 1:
+                id_usuario, senha_banco, status, tentativas = usuario
                 if check_password_hash(senha_banco, senha):
                     session['id_usuario'] = id_usuario
                     return redirect(url_for("home"))
                 else:
-                    cursor.execute("""UPDATE USUARIO SET TENTATIVAS = TENTATIVAS + 1 WHERE ID_USUARIO = ? """, (usuario[0],))
-                    erros = cursor.fetchone()
+                    cursor.execute("""UPDATE USUARIO SET TENTATIVAS = COALESCE(TENTATIVAS, 0) + 1 WHERE ID_USUARIO = ? """, (usuario[0],))
+                    cursor.execute("""SELECT TENTATIVAS FROM USUARIO WHERE ID_USUARIO = ?""", (usuario[0],))
+                    erros = cursor.fetchone()[0]
                     con.commit()
                     if erros == 3:
                         flash("BLOQUEADO: 3 tentativas erradas!", "error")
                         cursor.execute("""UPDATE USUARIO SET STATUS = 0 WHERE ID_USUARIO = ?""", (usuario[0],))
                         con.commit()
+                        return redirect(url_for('login_page'))
 
                     flash("Senha incorreta!", "error")
                     return redirect(url_for('login_page'))
             else:
-                flash("E-mail não cadastrado!", "error")
+                flash("Usuário inativo!", "error")
                 return redirect(url_for("login_page"))
         else:
-            flash("Usuário inativo!", "error")
-            return redirect(url_for("login_page"))
+                flash("E-mail não cadastrado!", "error")
+                return redirect(url_for("login_page"))
+
     except Exception as e:
         flash(f"Ocorreu um erro: {e}", "error")
         con.rollback()
@@ -263,6 +267,66 @@ def cadastrar():
         return redirect(url_for('novo_usuario'))
     finally:
         cursor.close()
+
+
+
+@app.route('/livros/relatorio', methods=['GET'])
+def relatorio():
+
+    cursor = con.cursor()
+
+    cursor.execute("""
+        SELECT id_livro, titulo, autor, ano_publicacao
+        FROM livro
+    """)
+
+    livros = cursor.fetchall()
+    cursor.close()
+
+    pdf = FPDF()
+    pdf.set_auto_page_break(auto=True, margin=15)
+    pdf.add_page()
+
+    pdf.set_font("Arial", style='B', size=16)
+    pdf.cell(200, 10, "Relatório de Livros", ln=True, align='C')
+
+    pdf.ln(5)  # Espaço entre o título e a linha
+    pdf.line(10, pdf.get_y(), 200, pdf.get_y())  # Linha abaixo do título
+    pdf.ln(5)  # Espaço após a linha
+
+    pdf.set_font("Arial", size=12)
+
+    for livro in livros:
+        pdf.cell(
+            200,
+            10,
+            f"ID: {livro[0]} - {livro[1]} - {livro[2]} - {livro[3]}",
+            ln=True
+        )
+
+    contador_livros = len(livros)
+
+    pdf.ln(10)  # Espaço antes do contador
+
+    pdf.set_font("Arial", style='B', size=12)
+
+    pdf.cell(
+        200,
+        10,
+        f"Total de livros cadastrados: {contador_livros}",
+        ln=True,
+        align='C'
+    )
+
+    pdf_path = "relatorio_livros.pdf"
+
+    pdf.output(pdf_path)
+
+    return send_file(
+        pdf_path,
+        as_attachment=True,
+        mimetype='application/pdf'
+    )
 
 
 if __name__ == "__main__":

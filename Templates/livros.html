@@ -15,10 +15,12 @@
                 <a class="sair" href="{{ url_for('login_page') }}">Logar 👤</a>
             {% endif %}
         </div>
-
-        <div class="titulo-btn">
+        <div class="titulo">
             <h1>Lista de livros</h1>
-            <a class="adicionar" href="{{ url_for('novo') }}">Adicionar Livro</a>
+            <div class="titulo-btn">
+                <a class="adicionar" href="{{ url_for('novo') }}">Adicionar Livro</a>
+                <a class="criar_pdf" href="{{ url_for('relatorio') }}">Criar PDF</a>
+            </div>
         </div>
 
         {% with messages = get_flashed_messages(with_categories=true) %}

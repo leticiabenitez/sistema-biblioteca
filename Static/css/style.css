@@ -344,13 +344,20 @@ td form {
     box-shadow: none;
 }
 
-.titulo-btn{
+.titulo{
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
 
-.adicionar, .cancelar {
+.titulo-btn{
+    display: flex;
+    width: 22%;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.adicionar, .cancelar, .criar_pdf {
     display: inline-block;
 
     padding: 10px 18px;
@@ -369,7 +376,7 @@ td form {
     transition: 0.2s ease;
 }
 
-.adicionar:hover , .cancelar:hover{
+.adicionar:hover , .cancelar:hover, .criar_pdf:hover{
     background-color: #21218a;
 
     transform: translateY(-1px);
